@@ -32,9 +32,12 @@ def get_presets():
     headers = list(map(clear_str, soup.find_all('th')))
     return {'num_of_pages':int(npages), 'num_of_items':int(nitems), 'headers':headers}
 
-# Parse single file 
-def parse_single_page(page):
-    response = urlopen(url_prefix + str(page))
+presets  = get_presets()
+df =  pd.DataFrame(index=list(range(presets['num_of_items'])), columns=presets['headers'])
+start = time()
+for i in range(1,presets['num_of_pages']+1):
+    t1 = time()
+    response = urlopen(url_prefix + str(i))
     content = response.read().decode()
     # Get all items on the page
     soup = BeautifulSoup(content, "html.parser")
@@ -46,17 +49,9 @@ def parse_single_page(page):
     if len(rows) % 2:
         raise('The page has even number of rows!')
     nrows = len(rows)//2
-    for i in range(nrows):
-        vals = list(map(clear_str, rows[2*i].find_all('td'))) + list(map(clear_str, rows[2*i+1].find_all('td')))
-        df.iloc[50*(page-1) + i] = vals
-    return True
-
-presets  = get_presets()
-df =  pd.DataFrame(index=list(range(presets['num_of_items'])), columns=presets['headers'])
-start = time()
-for i in range(1,presets['num_of_pages']+1):
-    t1 = time()
-    parse_single_page(i)
+    for j in range(nrows):
+        vals = list(map(clear_str, rows[2*j].find_all('td'))) + list(map(clear_str, rows[2*j+1].find_all('td')))
+        df.iloc[50*(i-1) + j] = vals
     t2 = time()
     print('Page',i,'done! by', t2 - t1)
 finish = time()
