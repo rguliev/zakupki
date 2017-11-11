@@ -1,4 +1,4 @@
-import re, sys, os
+import re, sys, os, csv
 import pandas as pd
 import numpy as np
 from time import time
@@ -56,6 +56,6 @@ for i in range(1,presets['num_of_pages']+1):
     print('Page',i,'done! by', t2 - t1)
 finish = time()
 print("Total time is",finish - start)
-df.to_csv('outputdata.csv', sep=';',decimal=',', index=False)
+#df.to_csv('outputdata.csv', sep=';',decimal=',', index=False, quoting=csv.QUOTE_ALL)
+df.to_excel('outputdata.xlsx', index=False)
 print("Total time is",time() - finish)
-#print(counts)
