@@ -1,6 +1,5 @@
-import re, sys, os, csv
+import re, csv
 import pandas as pd
-import numpy as np
 from time import time
 from urllib.request import urlopen
 from urllib.error import HTTPError, URLError
@@ -58,7 +57,7 @@ finish = time()
 print("Total time is",finish - start)
 #df.to_csv('outputdata.csv', sep=';',decimal=',', index=False, quoting=csv.QUOTE_ALL)
 pandas.io.formats.excel.header_style = None
-writer = pd.ExcelWriter("outputdata_test.xlsx", engine='xlsxwriter')
+writer = pd.ExcelWriter("outputdata.xlsx", engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Закупки', index=False)
 workbook  = writer.book
 worksheet = writer.sheets['Закупки']
